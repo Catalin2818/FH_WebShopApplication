@@ -21,7 +21,7 @@ public class ProductController {
     @GetMapping(value = "/getAllProducts")
     public String showProductList(){
         List<Product> listProducts = service.listAll();
-        //TODO
+
        return getJsonObject(listProducts);
     }
 
