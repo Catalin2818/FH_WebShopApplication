@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Products</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+<div class="container-fluid text-center">
+    <div><h2>Manage Products</h2></div>
+    <div class="m-2">
+        <a class="h3" th:href="@{/products/new}">Add New Product</a>
+    </div>
+    <div th:if="${message}" class="alert alert-success text-center">
+        [[${message}]]
+    </div>
+    <div>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Origin</th>
+                <th>Description</th>
+                <th>Allergens</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Category</th>
+                <th>Picked-Up</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="product : ${listProducts}"> <!---using Thymeleaf code to display Products---->
+                <tr>
+                    <td>[[${product.id}]]</td>
+                    <td>[[${product.productName}]]</td>
+                    <td>[[${product.productOrigin}]]</td>
+                    <td>[[${product.productDesc}]]</td>
+                    <td>[[${product.productAllergens}]]</td>
+                    <td>[[${product.productPrice}]]</td>
+                    <td>[[${product.productQuantity}]]</td>
+
+                    <td>[[${product.productCategory}]]</td>
+                    <td>[[${product.productPickedUp}]]</td>
+                    <td>
+                        <a class="h4 mr-3" th:href="@{'/products/edit/' + ${product.id}}">Edit</a>
+                        <a class="h4" th:href="@{'/products/delete/' + ${product.id}}">Delete</a>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
