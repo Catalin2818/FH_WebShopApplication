@@ -15,6 +15,15 @@ public class UserService {
         return (List<User>) repo.findAll();
     }
 
+    public User getUserWithEmail(String email) throws UserNotFoundExeption{
+        Optional<User> result = repo.findByEmail(email);
+
+        if (result.isPresent()){
+            return result.get();
+        }
+        throw new UserNotFoundExeption("");
+    }
+
     public void save(User user) {
         repo.save(user);
     }

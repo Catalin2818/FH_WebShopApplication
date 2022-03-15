@@ -1,6 +1,9 @@
 package com.fhproject.user;
 
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -11,6 +14,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Email
+    @NotBlank
     @Column(nullable = false, unique = true, length = 45)
     private String email;
 
@@ -31,9 +36,15 @@ public class User {
 
     private boolean enabled;
 
+    private boolean active;
+
+    private boolean loggedIn;
+
+
+
     public User(){}
 
-    private User(int id, String email, String password, String firstName, String lastName, String cart, String role, boolean enabled) {
+    private User(int id, String email, String password, String firstName, String lastName, String cart, String role, boolean enabled, boolean active,boolean loggedIn) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -42,10 +53,13 @@ public class User {
         this.cart = cart;
         this.role = role;
         this.enabled = enabled;
+        this.active = active;
+        this.loggedIn = loggedIn;
     }
 
     public static User of(@NotNull UserDto userDto){
-        return new User(userDto.getId(), userDto.getEmail(), userDto.getPassword(), userDto.getFirstName(), userDto.getLastName(), userDto.getCart(), userDto.getRole(), userDto.isEnabled());
+        return new User(userDto.getId(), userDto.getEmail(), userDto.getPassword(), userDto.getFirstName(),
+                userDto.getLastName(), userDto.getCart(), userDto.getRole(), userDto.isEnabled(), userDto.isActive(), userDto.isLoggedIn());
     }
 
 
@@ -112,6 +126,14 @@ public class User {
         this.enabled = enabled;
     }
 
+    public boolean isActive() {return active;}
+
+    public void setActive(boolean active) {this.active = active;}
+
+    public boolean isLoggedIn() {return loggedIn;}
+
+    public void setLoggedIn(boolean loggedIn) {this.loggedIn = loggedIn;}
+
     @Override
     public String toString() {
         return "User{" +
@@ -123,6 +145,8 @@ public class User {
                 ", cart='" + cart + '\'' +
                 ", role='" + role + '\'' +
                 ", enabled=" + enabled +
+                ", active=" + active +
+                ", loggedIn=" + loggedIn +
                 '}';
     }
 

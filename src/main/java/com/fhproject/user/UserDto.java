@@ -10,9 +10,11 @@ public class UserDto {
     private String cart; //ShoppingCart cart;
     private String role;
     boolean enabled;
+    boolean active;
+    boolean loggedIn;
 
 
-    public UserDto(int id, String firstName, String lastName, String email, String password, String cart, String role, boolean enabled) {
+    public UserDto(int id, String firstName, String lastName, String email, String password, String cart, String role, boolean enabled, boolean active, boolean loggedIn) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -21,6 +23,8 @@ public class UserDto {
         this.cart = cart;
         this.role = role;
         this.enabled = enabled;
+        this.active = active;
+        this.loggedIn = loggedIn;
     }
 
     public int getId() {
@@ -82,5 +86,13 @@ public class UserDto {
     public boolean isEnabled() {return enabled;}
 
     public void setEnabled(boolean enabled) {this.enabled = enabled;}
+
+    public boolean isActive() {return active;}
+
+    public void setActive(boolean active) {this.active = active;}
+
+    public boolean isLoggedIn() {return loggedIn;}
+
+    public void setLoggedIn(boolean loggedIn) {this.loggedIn = loggedIn;}
 }
 

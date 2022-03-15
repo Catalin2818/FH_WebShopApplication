@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.util.Arrays;
 
 
 @Entity
@@ -46,25 +47,35 @@ public class Product {
     @Column(nullable = false, name = "product_pickedup", length = 5)
     private String productPickedUp;
 
+    @Lob
+    @Column(name = "product_img", nullable = false, columnDefinition = "mediumlob")
+    private byte[] image;
+
 
     public Product() {
     }
 
     //Private Constructor for security reasons / Validation of Object is in Method of() with @NotNull
-    private Product(int id, String productName, String productOrigin, String productDesc, String productAllergens, double productPrice, int productQuantity, String productCategory, String productPickedUp) {
-        this.id = id;
-        this.productName = productName;
-        this.productOrigin = productOrigin;
-        this.productDesc = productDesc;
-        this.productAllergens = productAllergens;
-        this.productPrice = productPrice;
-        this.productQuantity = productQuantity;
-        this.productCategory = productCategory;
-        this.productPickedUp = productPickedUp;
+    private Product(int id, String productName, String productOrigin, String productDesc,
+                    String productAllergens, double productPrice, int productQuantity, String productCategory,
+                    String productPickedUp, byte[] image) {
+
+                        this.id = id;
+                        this.productName = productName;
+                        this.productOrigin = productOrigin;
+                        this.productDesc = productDesc;
+                        this.productAllergens = productAllergens;
+                        this.productPrice = productPrice;
+                        this.productQuantity = productQuantity;
+                        this.productCategory = productCategory;
+                        this.productPickedUp = productPickedUp;
+                        this.image = image;
     }
 
     public static Product of(@NotNull ProductDto productDto) {
-        return new Product(productDto.getId(), productDto.getProductName(), productDto.getProductOrigin(), productDto.getProductDesc(), productDto.getProductAllergens(), productDto.getProductPrice(), productDto.getProductQuantity(), productDto.getProductCategory(), productDto.getProductPickup());
+        return new Product(productDto.getId(), productDto.getProductName(), productDto.getProductOrigin(),
+                productDto.getProductDesc(), productDto.getProductAllergens(), productDto.getProductPrice(),
+                productDto.getProductQuantity(), productDto.getProductCategory(), productDto.getProductPickup(), productDto.getImage());
     }
 
 
@@ -140,10 +151,18 @@ public class Product {
         this.productPickedUp = productPickedUp;
     }
 
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
 
     @Override
     public String toString() {
-        return "Products{" +
+        return "Product{" +
                 "id=" + id +
                 ", productName='" + productName + '\'' +
                 ", productOrigin='" + productOrigin + '\'' +
@@ -153,8 +172,7 @@ public class Product {
                 ", productQuantity=" + productQuantity +
                 ", productCategory='" + productCategory + '\'' +
                 ", productPickedUp='" + productPickedUp + '\'' +
+                ", image=" + Arrays.toString(image) +
                 '}';
     }
-
-
 }

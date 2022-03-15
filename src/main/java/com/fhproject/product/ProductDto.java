@@ -13,22 +13,28 @@ public class ProductDto {
     private int productQuantity;
     private String productCategory;
     private String productPickup;
+    private byte[] image;
 
-    private ProductDto(int id, String productName, String productOrigin, String productDesc,String productAllergens, double productPrice, int productQuantity, String productCategory,String productPickup){
+    private ProductDto(int id, String productName, String productOrigin,
+                       String productDesc,String productAllergens, double productPrice,
+                       int productQuantity, String productCategory,String productPickup, byte[] image){
 
-        this.id = id;
-        this.productName = productName;
-        this.productOrigin = productOrigin;
-        this.productDesc = productDesc;
-        this.productAllergens = productAllergens;
-        this.productPrice = productPrice;
-        this.productQuantity = productQuantity;
-        this.productCategory = productCategory;
-        this.productPickup = productPickup;
+                            this.id = id;
+                            this.productName = productName;
+                            this.productOrigin = productOrigin;
+                            this.productDesc = productDesc;
+                            this.productAllergens = productAllergens;
+                            this.productPrice = productPrice;
+                            this.productQuantity = productQuantity;
+                            this.productCategory = productCategory;
+                            this.productPickup = productPickup;
+                            this.image = image;
     }
 
     public static ProductDto of(@NotNull Product product){
-        return new ProductDto(product.getId(), product.getProductName(), product.getProductOrigin(), product.getProductDesc(), product.getProductAllergens(), product.getProductPrice(), product.getProductQuantity(), product.getProductCategory(), product.getProductPickedUp());
+        return new ProductDto(product.getId(), product.getProductName(), product.getProductOrigin(),
+                product.getProductDesc(), product.getProductAllergens(), product.getProductPrice(),
+                product.getProductQuantity(), product.getProductCategory(), product.getProductPickedUp(), product.getImage());
     }
 
     public int getId() {
@@ -103,5 +109,8 @@ public class ProductDto {
         this.productPickup = productPickup;
     }
 
+    public byte[] getImage() {return image;}
+
+    public void setImage(byte[] image) {this.image = image;}
 }
 

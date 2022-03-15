@@ -5,7 +5,9 @@ import com.fhproject.product.ProductNotFoundExeption;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +23,51 @@ import java.util.List;
 public class UserController {
     @Autowired private UserService service;
 
+    @RequestMapping(value = "/login")
+    public ResponseEntity<String> logIn(@RequestParam(value="email") String email, @RequestParam(value="password") String password){
+
+        Boolean login = false;
+        User user = null;
+
+        try {
+             user = service.getUserWithEmail(email);
+            if (user.getPassword().equals(password)){
+                login = true;
+            }
+        } catch (UserNotFoundExeption e) {
+            e.printStackTrace();
+        }
+
+        if (!login){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wrong email or password!");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(user.getRole());
+    }
+
+    @PostMapping(value="/registration",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> registration(@RequestBody @Valid UserDto userDto){
+        User user = User.of(userDto);
+        service.save(user);
+
+        try{
+            service.getUserWithEmail(user.getEmail());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email already exists.");
+
+        } catch (UserNotFoundExeption e) {
+            service.save(user);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Registration seccessful.");
+    }
+
+
+
+
     @GetMapping("/getAllUsers")
     public String showUserList(){
         List<User> listUsers = service.listAll();
         //TODO
         return getJsonObject(listUsers);
     }
-
 
     @PostMapping(value = "/addUsers",consumes = MediaType.APPLICATION_JSON_VALUE)
     public String saveUser(@RequestBody @Valid UserDto userDto){
@@ -75,13 +115,13 @@ public class UserController {
     }
 
     @NotNull
-    private String getJsonObject(List<User> userUpdate) {
-        JSONObject jsonProductList = new JSONObject();
-        JSONArray jsonArray = new JSONArray(userUpdate);
-        jsonProductList.put("users", jsonArray);
+    private String getJsonObject(List<User> userList) {
+        JSONObject jsonUserList = new JSONObject();
+        JSONArray jsonArray = new JSONArray(userList);
+        jsonUserList.put("users", jsonArray);
 
-        System.out.println(jsonProductList.toString());
-        return jsonProductList.toString();
+        System.out.println(jsonUserList.toString());
+        return jsonUserList.toString();
     }
 
 }
