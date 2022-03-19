@@ -28,6 +28,9 @@ public class CardProduct {
     @Column
     private int productId;
 
+    public CardProduct() {
+    }
+
     public CardProduct(long id, int productQuantity, int shoppingCart, int productId) {
         this.id = id;
         this.productQuantity = productQuantity;
@@ -65,6 +68,16 @@ public class CardProduct {
 
     public void setProductId(int productId) {
         this.productId = productId;
+    }
+
+    @Override
+    public String toString() {
+        return "CardProduct{" +
+                "id=" + id +
+                ", productQuantity=" + productQuantity +
+                ", shoppingCart=" + shoppingCart +
+                ", productId=" + productId +
+                '}';
     }
 
     @Override
