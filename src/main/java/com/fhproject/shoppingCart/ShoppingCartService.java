@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.fhproject.user.User;
+
 @Service
 public class ShoppingCartService {
     @Autowired
@@ -16,8 +18,8 @@ public class ShoppingCartService {
 
     public void save(ShoppingCart shoppingCart){repo.save(shoppingCart);}
 
-    public List<ShoppingCart> getByUserId(int userId) throws ShoppingCartNotFoundExeption {
-        Optional<ShoppingCart> result = repo.findByUser(userId);
+    public List<ShoppingCart> getByUserId(User user) throws ShoppingCartNotFoundExeption {
+        Optional<ShoppingCart> result = repo.findByUser(user);
         return result.stream().collect(Collectors.toList());
     }
 
@@ -37,19 +39,19 @@ public class ShoppingCartService {
         repo.deleteById(id);
     }
 
-    public List<ShoppingCart> getUnfinishedCartByUserId(int userId) throws ShoppingCartNotFoundExeption {
-        Optional<ShoppingCart> result = repo.findByUserAndFinished(userId, false);
+    public List<ShoppingCart> getUnfinishedCartByUserId(User user) throws ShoppingCartNotFoundExeption {
+        Optional<ShoppingCart> result = repo.findByUserAndFinished(user, false);
         if(result.isPresent()) {
             return result.stream().collect(Collectors.toList());
         }
-        throw new ShoppingCartNotFoundExeption("Could not find unfinished cart with userId " + userId);
+        throw new ShoppingCartNotFoundExeption("Could not find unfinished cart with userId " + user.getId());
     }
 
-    public List<ShoppingCart> getFinishedCartByUserId(int userId) throws ShoppingCartNotFoundExeption {
-        Optional<ShoppingCart> result = repo.findByUserAndFinished(userId, true);
+    public List<ShoppingCart> getFinishedCartByUserId(User user) throws ShoppingCartNotFoundExeption {
+        Optional<ShoppingCart> result = repo.findByUserAndFinished(user, true);
         if(result.isPresent()) {
             return result.stream().collect(Collectors.toList());
         }
-        throw new ShoppingCartNotFoundExeption("Could not find finished cart with userId " + userId);
+        throw new ShoppingCartNotFoundExeption("Could not find finished cart with userId " + user.getId());
     }
 }

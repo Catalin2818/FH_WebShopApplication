@@ -13,6 +13,9 @@ import javax.validation.constraints.NotNull;
 
 import java.util.List;
 
+import com.fhproject.user.User;
+import com.fhproject.user.UserDto;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/cart")
@@ -31,7 +34,7 @@ public class ShoppingCartController {
     public ResponseEntity<String> showWholeCartOfUser(@PathVariable("id") int userId) {
         List<ShoppingCart> shoppingCartList = null;
         try {
-            shoppingCartList = shoppingCartService.getByUserId(userId);
+            shoppingCartList = shoppingCartService.getByUserId(User.of(userId));
         } catch (ShoppingCartNotFoundExeption e) {
             e.printStackTrace();
             return ResponseEntity
@@ -47,7 +50,7 @@ public class ShoppingCartController {
     public ResponseEntity<String> showUnfinishedCartOfUser(@PathVariable("id") int userId) {
         List<ShoppingCart> shoppingCartList = null;
         try {
-            shoppingCartList = shoppingCartService.getUnfinishedCartByUserId(userId);
+            shoppingCartList = shoppingCartService.getUnfinishedCartByUserId(User.of(userId));
         } catch (ShoppingCartNotFoundExeption e) {
             e.printStackTrace();
             return ResponseEntity
@@ -63,7 +66,7 @@ public class ShoppingCartController {
     public ResponseEntity<String> showFinishedCartOfUser(@PathVariable("id") int userId) {
         List<ShoppingCart> shoppingCartList = null;
         try {
-            shoppingCartList = shoppingCartService.getFinishedCartByUserId(userId);
+            shoppingCartList = shoppingCartService.getFinishedCartByUserId(User.of(userId));
         } catch (ShoppingCartNotFoundExeption e) {
             e.printStackTrace();
             return ResponseEntity

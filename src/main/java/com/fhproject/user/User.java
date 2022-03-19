@@ -57,11 +57,18 @@ public class User {
         this.loggedIn = loggedIn;
     }
 
+    private User(int id) {
+        this.id = id;
+    }
+
     public static User of(@NotNull UserDto userDto){
         return new User(userDto.getId(), userDto.getEmail(), userDto.getPassword(), userDto.getFirstName(),
                 userDto.getLastName(), userDto.getCart(), userDto.getRole(), userDto.isEnabled(), userDto.isActive(), userDto.isLoggedIn());
     }
 
+    public static User of(int id) {
+        return new User(id);
+    }
 
 
     public Integer getId() {
