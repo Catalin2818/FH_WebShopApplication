@@ -7,6 +7,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -37,8 +39,8 @@ public class User {
     private String role;
 
 
-    @OneToMany(mappedBy = "userId")
-    private ShoppingCart shoppingCart;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private Set<ShoppingCart> shoppingCart;
 
     private boolean enabled;
 
@@ -146,6 +148,14 @@ public class User {
     public boolean isLoggedIn() {return loggedIn;}
 
     public void setLoggedIn(boolean loggedIn) {this.loggedIn = loggedIn;}
+
+    public Set<ShoppingCart> getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void setShoppingCart(Set<ShoppingCart> shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
 
     @Override
     public String toString() {

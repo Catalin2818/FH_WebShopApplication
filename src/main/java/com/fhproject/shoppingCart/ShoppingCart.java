@@ -19,12 +19,13 @@ public class ShoppingCart {
     private long id;
 
     /*@OneToOne
-    @JoinColumn(name ="id",insertable = false,updatable = false)*/
+    @JoinColumn(name ="id",insertable = false,updatable = false)
     @Column
-    private User user;
+    private User user;*/
 
-    @Column(name="userId", nullable = false, updatable = false)
-    private int userId;
+    @ManyToOne
+    //@Column(name="userId", nullable = false, updatable = false)
+    private User user;
 
     @OneToMany
     private List<Product> products;
@@ -92,6 +93,7 @@ public class ShoppingCart {
     public void setFinished(boolean finished) {
         this.finished = finished;
     }
+
 
     @Override
     public String toString() {
