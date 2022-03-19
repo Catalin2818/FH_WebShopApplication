@@ -1,5 +1,6 @@
 package com.fhproject.shoppingCart;
 
+import com.fhproject.cardProduct.CardProduct;
 import com.fhproject.product.Product;
 import com.fhproject.user.User;
 
@@ -27,8 +28,8 @@ public class ShoppingCart {
     //@Column(name="userId", nullable = false, updatable = false)
     private User user;
 
-    @OneToMany
-    private List<Product> products;
+    @OneToMany(mappedBy = "shoppingCart")
+    private List<CardProduct> products;
 
     @Positive
     @Min(1)
@@ -40,7 +41,7 @@ public class ShoppingCart {
 
     public ShoppingCart(){}
 
-    private ShoppingCart(long id, User user, List<Product> products, int productQuantity,boolean finished){
+    private ShoppingCart(long id, User user, List<CardProduct> products, int productQuantity,boolean finished){
         this.id = id;
         this.user = user;
         this.products = products;
@@ -70,11 +71,11 @@ public class ShoppingCart {
         this.user = user;
     }
 
-    public List<Product> getProducts() {
+    public List<CardProduct> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(List<CardProduct> products) {
         this.products = products;
     }
 

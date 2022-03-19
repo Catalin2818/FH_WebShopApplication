@@ -1,5 +1,6 @@
 package com.fhproject.shoppingCart;
 
+import com.fhproject.cardProduct.CardProduct;
 import com.fhproject.product.Product;
 import com.fhproject.user.User;
 
@@ -10,11 +11,11 @@ public class ShoppingCartDto {
 
    private long id;
    private User user;
-   private List<Product> products;
+   private List<CardProduct> products;
    private int productQuantity;
    private boolean finished;
 
-   private ShoppingCartDto(long id,User user, List<Product> products,int productQuantity,  boolean finished){
+   private ShoppingCartDto(long id,User user, List<CardProduct> products,int productQuantity,  boolean finished){
        this.id = id;
        this.user = user;
        this.products = products;
@@ -43,11 +44,11 @@ public class ShoppingCartDto {
         this.user = user;
     }
 
-    public List<Product> getProducts() {
+    public List<CardProduct> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(List<CardProduct> products) {
         this.products = products;
     }
 
