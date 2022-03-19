@@ -39,7 +39,7 @@ public class User {
     private String cart;
 
     @Column(length = 50, nullable = false, name="user_role")
-    private String role;
+    private String role = "user";
 
     @Column
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
