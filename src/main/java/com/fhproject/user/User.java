@@ -1,6 +1,8 @@
 package com.fhproject.user;
 
 
+import com.fhproject.shoppingCart.ShoppingCart;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -33,6 +35,10 @@ public class User {
 
     @Column(length = 50, nullable = false, name="user_role")
     private String role;
+
+
+    @OneToMany(mappedBy = "userId")
+    private ShoppingCart shoppingCart;
 
     private boolean enabled;
 

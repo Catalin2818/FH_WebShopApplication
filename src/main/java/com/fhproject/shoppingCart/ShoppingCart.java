@@ -18,9 +18,13 @@ public class ShoppingCart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne
-    @JoinColumn(name ="id",insertable = false,updatable = false)
+    /*@OneToOne
+    @JoinColumn(name ="id",insertable = false,updatable = false)*/
+    @Column
     private User user;
+
+    @Column(name="userId", nullable = false, updatable = false)
+    private int userId;
 
     @OneToMany
     private List<Product> products;
