@@ -1,11 +1,11 @@
 package com.fhproject.product;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -35,5 +35,14 @@ public class ProductService {
             throw new ProductNotFoundExeption("Could not find any products with ID" + id);
         }
         repo.deleteById(id);
+    }
+
+    public List<Product> getProductsOfCategory(String category) throws ProductNotFoundExeption {
+        Optional<Product> result = repo.findByCategory(category);
+        if (result.isPresent()) {
+            return result.stream().collect(Collectors.toList());
+        }
+        throw new ProductNotFoundExeption("Could not find products with category " + category);
+
     }
 }

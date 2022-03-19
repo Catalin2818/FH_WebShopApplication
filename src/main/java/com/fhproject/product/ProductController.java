@@ -3,8 +3,9 @@ package com.fhproject.product;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
@@ -23,6 +24,22 @@ public class ProductController {
         List<Product> listProducts = service.listAll();
 
        return getJsonObject(listProducts);
+    }
+
+    @GetMapping(value = "/getAllProductsOfCategory/{category}")
+    public ResponseEntity<String> showProductListOfCategory(@PathVariable("category") String category) {
+        try {
+            List<Product> productList = service.getProductsOfCategory(category);
+            return ResponseEntity
+                    .status(HttpStatus.NO_CONTENT)
+                    .body(getJsonObject(productList));
+
+        } catch (ProductNotFoundExeption e) {
+            System.out.println("Could not find any products of category " + category);
+        }
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .body("Could not find any products of category");
     }
 
     @PostMapping(value = "/addProducts",consumes = MediaType.APPLICATION_JSON_VALUE)
