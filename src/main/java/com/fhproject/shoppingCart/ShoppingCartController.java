@@ -37,7 +37,7 @@ public class ShoppingCartController {
         } catch (ShoppingCartNotFoundExeption e) {
             e.printStackTrace();
             return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
+                    .status(HttpStatus.NO_CONTENT)
                     .body("No shopping cart for userId " + userId + "exists.");
         }
         return ResponseEntity
@@ -53,7 +53,7 @@ public class ShoppingCartController {
         } catch (ShoppingCartNotFoundExeption e) {
             e.printStackTrace();
             return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
+                    .status(HttpStatus.NO_CONTENT)
                     .body("No unfinished shopping cart for userId " + userId + "exists.");
         }
         return ResponseEntity
@@ -69,7 +69,7 @@ public class ShoppingCartController {
         } catch (ShoppingCartNotFoundExeption e) {
             e.printStackTrace();
             return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
+                    .status(HttpStatus.NO_CONTENT)
                     .body("No finished shopping cart for userId " + userId + "exists.");
         }
         return ResponseEntity
@@ -96,7 +96,7 @@ public class ShoppingCartController {
         } catch (ShoppingCartNotFoundExeption e) {
             //e.printStackTrace();
             return ResponseEntity
-                    .status(HttpStatus.OK)
+                    .status(HttpStatus.NO_CONTENT)
                     .body("Shopping cart update was not successful");
         }
     }
