@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ShoppingCartService {
@@ -14,6 +15,11 @@ public class ShoppingCartService {
     public List<ShoppingCart> listAll(){return (List<ShoppingCart>) repo.findAll();}
 
     public void save(ShoppingCart shoppingCart){repo.save(shoppingCart);}
+
+    public List<ShoppingCart> getByUserId(int userId) throws ShoppingCartNotFoundExeption {
+        Optional<ShoppingCart> result = repo.findByUserId(userId);
+        return result.stream().collect(Collectors.toList());
+    }
 
     public ShoppingCart get(Integer id) throws ShoppingCartNotFoundExeption{
         Optional<ShoppingCart> result = repo.findById(id);
