@@ -17,7 +17,7 @@ public class ShoppingCartService {
     public void save(ShoppingCart shoppingCart){repo.save(shoppingCart);}
 
     public List<ShoppingCart> getByUserId(int userId) throws ShoppingCartNotFoundExeption {
-        Optional<ShoppingCart> result = repo.findByUserId(userId);
+        Optional<ShoppingCart> result = repo.findByUser(userId);
         return result.stream().collect(Collectors.toList());
     }
 
@@ -35,5 +35,21 @@ public class ShoppingCartService {
             throw new ShoppingCartNotFoundExeption("Could not find anything in cart with ID"+id);
         }
         repo.deleteById(id);
+    }
+
+    public List<ShoppingCart> getUnfinishedCartByUserId(int userId) throws ShoppingCartNotFoundExeption {
+        Optional<ShoppingCart> result = repo.findByUserAndFinished(userId, false);
+        if(result.isPresent()) {
+            return result.stream().collect(Collectors.toList());
+        }
+        throw new ShoppingCartNotFoundExeption("Could not find unfinished cart with userId " + userId);
+    }
+
+    public List<ShoppingCart> getFinishedCartByUserId(int userId) throws ShoppingCartNotFoundExeption {
+        Optional<ShoppingCart> result = repo.findByUserAndFinished(userId, true);
+        if(result.isPresent()) {
+            return result.stream().collect(Collectors.toList());
+        }
+        throw new ShoppingCartNotFoundExeption("Could not find finished cart with userId " + userId);
     }
 }

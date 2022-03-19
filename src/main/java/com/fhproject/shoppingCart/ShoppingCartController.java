@@ -43,6 +43,38 @@ public class ShoppingCartController {
                 .body(getJsonObject(shoppingCartList));
     }
 
+    @GetMapping("/getUnfinishedShoppingCartOfUser/{id}")
+    public ResponseEntity<String> showUnfinishedCartOfUser(@PathVariable("id") int userId) {
+        List<ShoppingCart> shoppingCartList = null;
+        try {
+            shoppingCartList = shoppingCartService.getUnfinishedCartByUserId(userId);
+        } catch (ShoppingCartNotFoundExeption e) {
+            e.printStackTrace();
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("No unfinished shopping cart for userId " + userId + "exists.");
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(getJsonObject(shoppingCartList));
+    }
+
+    @GetMapping("/getFinishedShoppingCartOfUser/{id}")
+    public ResponseEntity<String> showFinishedCartOfUser(@PathVariable("id") int userId) {
+        List<ShoppingCart> shoppingCartList = null;
+        try {
+            shoppingCartList = shoppingCartService.getFinishedCartByUserId(userId);
+        } catch (ShoppingCartNotFoundExeption e) {
+            e.printStackTrace();
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("No finished shopping cart for userId " + userId + "exists.");
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(getJsonObject(shoppingCartList));
+    }
+
     @PostMapping(value = "/addToShoppingCart", consumes = MediaType.APPLICATION_JSON_VALUE)
     public String addToCart(@RequestBody ShoppingCartDto shoppingCartDto) {
         ShoppingCart shoppingCart = ShoppingCart.of(shoppingCartDto);

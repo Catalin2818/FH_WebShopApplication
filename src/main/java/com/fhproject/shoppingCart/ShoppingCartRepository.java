@@ -6,5 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ShoppingCartRepository extends CrudRepository<ShoppingCart, Integer> {
     public Long countById(long id);
-    public Optional<ShoppingCart> findByUserId(int userId);
+    public Optional<ShoppingCart> findByUser(int userId);
+    public Optional<ShoppingCart> findByUserAndFinished(int userId, boolean finished);
 }
