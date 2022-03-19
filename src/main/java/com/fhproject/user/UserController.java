@@ -59,9 +59,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Registration seccessful.");
     }
 
-
-
-
     @GetMapping("/getAllUsers")
     public String showUserList(){
         List<User> listUsers = service.listAll();

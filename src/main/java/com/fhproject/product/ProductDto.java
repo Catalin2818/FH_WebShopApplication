@@ -13,11 +13,11 @@ public class ProductDto {
     private int productQuantity;
     private String productCategory;
     private String productPickup;
-    private byte[] image;
+    private String image;
 
     private ProductDto(int id, String productName, String productOrigin,
                        String productDesc,String productAllergens, double productPrice,
-                       int productQuantity, String productCategory,String productPickup, byte[] image){
+                       int productQuantity, String productCategory,String productPickup, String image){
 
                             this.id = id;
                             this.productName = productName;
@@ -109,8 +109,8 @@ public class ProductDto {
         this.productPickup = productPickup;
     }
 
-    public byte[] getImage() {return image;}
+    public String getImage() {return image;}
 
-    public void setImage(byte[] image) {this.image = image;}
+    public void setImage(String image) {this.image = image;}
 }
 

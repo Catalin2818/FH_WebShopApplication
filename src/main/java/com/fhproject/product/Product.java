@@ -47,9 +47,8 @@ public class Product {
     @Column(nullable = false, name = "product_pickedup", length = 5)
     private String productPickedUp;
 
-    @Lob
-    @Column(name = "product_img", nullable = false, columnDefinition = "mediumlob")
-    private byte[] image;
+    @Column(name = "product_img")
+    private String image;
 
 
     public Product() {
@@ -58,7 +57,7 @@ public class Product {
     //Private Constructor for security reasons / Validation of Object is in Method of() with @NotNull
     private Product(int id, String productName, String productOrigin, String productDesc,
                     String productAllergens, double productPrice, int productQuantity, String productCategory,
-                    String productPickedUp, byte[] image) {
+                    String productPickedUp, String image) {
 
                         this.id = id;
                         this.productName = productName;
@@ -151,11 +150,11 @@ public class Product {
         this.productPickedUp = productPickedUp;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -172,7 +171,7 @@ public class Product {
                 ", productQuantity=" + productQuantity +
                 ", productCategory='" + productCategory + '\'' +
                 ", productPickedUp='" + productPickedUp + '\'' +
-                ", image=" + Arrays.toString(image) +
+                ", image=" + image +
                 '}';
     }
 }
