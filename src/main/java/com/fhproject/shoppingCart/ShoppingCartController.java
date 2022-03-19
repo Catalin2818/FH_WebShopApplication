@@ -14,7 +14,6 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 import com.fhproject.user.User;
-import com.fhproject.user.UserDto;
 
 @CrossOrigin
 @RestController
@@ -86,16 +85,19 @@ public class ShoppingCartController {
     }
 
     @PostMapping(value = "/updateShoppingCart", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String updateCart(@RequestBody ShoppingCartDto shoppingCartDto) {
+    public ResponseEntity<String> updateCart(@RequestBody ShoppingCartDto shoppingCartDto) {
 
         try {
-            ShoppingCart shoppingCart = ShoppingCart.of(shoppingCartDto);
-            ShoppingCart cartUpdate = shoppingCartService.get((int) shoppingCart.getId());
-            return getJsonObject(List.of(cartUpdate));
+            shoppingCartService.updateShoppingCart(ShoppingCart.of(shoppingCartDto));
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body("Shopping cart update was successful");
 
         } catch (ShoppingCartNotFoundExeption e) {
-            e.printStackTrace();
-            return "Cart update was unseccessful.";
+            //e.printStackTrace();
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body("Shopping cart update was not successful");
         }
     }
 
