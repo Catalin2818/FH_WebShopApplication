@@ -29,7 +29,7 @@ public class ShoppingCart {
     private User user;
 
     @OneToMany(mappedBy = "shoppingCart")
-    private List<CardProduct> products;
+    private List<CardProduct> cardProducts;
 
     @Positive
     @Min(1)
@@ -41,16 +41,16 @@ public class ShoppingCart {
 
     public ShoppingCart(){}
 
-    private ShoppingCart(long id, User user, List<CardProduct> products, int productQuantity,boolean finished){
+    private ShoppingCart(long id, User user, List<CardProduct> cardProducts, int productQuantity,boolean finished){
         this.id = id;
         this.user = user;
-        this.products = products;
+        this.cardProducts = cardProducts;
         this.productQuantity = productQuantity;
         this.finished = finished;
     }
 
     public static ShoppingCart of(@NotNull ShoppingCartDto shoppingCartDto){
-        return new ShoppingCart(shoppingCartDto.getId(), shoppingCartDto.getUser(),shoppingCartDto.getProducts(),
+        return new ShoppingCart(shoppingCartDto.getId(), shoppingCartDto.getUser(),shoppingCartDto.getCardProducts(),
                 shoppingCartDto.getProductQuantity(),shoppingCartDto.isFinished());
     }
 
@@ -71,12 +71,12 @@ public class ShoppingCart {
         this.user = user;
     }
 
-    public List<CardProduct> getProducts() {
-        return products;
+    public List<CardProduct> getCardProducts() {
+        return cardProducts;
     }
 
-    public void setProducts(List<CardProduct> products) {
-        this.products = products;
+    public void setCardProducts(List<CardProduct> cardProducts) {
+        this.cardProducts = cardProducts;
     }
 
     public int getProductQuantity() {
@@ -101,7 +101,7 @@ public class ShoppingCart {
         return "ShoppingCart{" +
                 "id=" + id +
                 ", user=" + user +
-                ", products=" + products +
+                ", cardProducts=" + cardProducts +
                 ", productQuantity=" + productQuantity +
                 ", finished=" + finished +
                 '}';

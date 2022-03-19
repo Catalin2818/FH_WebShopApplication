@@ -1,7 +1,6 @@
 package com.fhproject.shoppingCart;
 
 import com.fhproject.cardProduct.CardProduct;
-import com.fhproject.product.Product;
 import com.fhproject.user.User;
 
 import javax.validation.constraints.NotNull;
@@ -11,20 +10,20 @@ public class ShoppingCartDto {
 
    private long id;
    private User user;
-   private List<CardProduct> products;
+   private List<CardProduct> cardProducts;
    private int productQuantity;
    private boolean finished;
 
-   private ShoppingCartDto(long id,User user, List<CardProduct> products,int productQuantity,  boolean finished){
+   private ShoppingCartDto(long id,User user, List<CardProduct> cardProducts,int productQuantity,  boolean finished){
        this.id = id;
        this.user = user;
-       this.products = products;
+       this.cardProducts = cardProducts;
        this.productQuantity = productQuantity;
        this.finished = finished;
    }
 
    public static ShoppingCartDto of(@NotNull ShoppingCart shoppingCart){
-       return new ShoppingCartDto(shoppingCart.getId(), shoppingCart.getUser(), shoppingCart.getProducts(),
+       return new ShoppingCartDto(shoppingCart.getId(), shoppingCart.getUser(), shoppingCart.getCardProducts(),
                shoppingCart.getProductQuantity(), shoppingCart.isFinished());
    }
 
@@ -44,12 +43,12 @@ public class ShoppingCartDto {
         this.user = user;
     }
 
-    public List<CardProduct> getProducts() {
-        return products;
+    public List<CardProduct> getCardProducts() {
+        return cardProducts;
     }
 
-    public void setProducts(List<CardProduct> products) {
-        this.products = products;
+    public void setCardProducts(List<CardProduct> cardProducts) {
+        this.cardProducts = cardProducts;
     }
 
     public int getProductQuantity() {
