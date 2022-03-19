@@ -47,7 +47,6 @@ public class UserController {
     @PostMapping(value="/registration",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> registration(@RequestBody @Valid UserDto userDto){
         User user = User.of(userDto);
-        service.save(user);
 
         try{
             service.getUserWithEmail(user.getEmail());

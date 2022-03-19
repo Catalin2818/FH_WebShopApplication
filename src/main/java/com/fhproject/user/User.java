@@ -2,9 +2,12 @@ package com.fhproject.user;
 
 
 import com.fhproject.shoppingCart.ShoppingCart;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -23,7 +26,7 @@ public class User {
     @Column(nullable = false, unique = true, length = 45)
     private String email;
 
-    @Column(length = 15, nullable = false)
+    @Column(nullable = false)
     private String password;
 
     @Column(length = 45, nullable = false, name="first_name")
@@ -38,7 +41,7 @@ public class User {
     @Column(length = 50, nullable = false, name="user_role")
     private String role;
 
-
+    @Column
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private Set<ShoppingCart> shoppingCart;
 
@@ -49,6 +52,10 @@ public class User {
     private boolean loggedIn;
 
 
+    @Bean
+    public static BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     public User(){}
 
@@ -70,7 +77,7 @@ public class User {
     }
 
     public static User of(@NotNull UserDto userDto){
-        return new User(userDto.getId(), userDto.getEmail(), userDto.getPassword(), userDto.getFirstName(),
+        return new User(userDto.getId(), userDto.getEmail(), bCryptPasswordEncoder().encode(userDto.getPassword()), userDto.getFirstName(),
                 userDto.getLastName(), userDto.getCart(), userDto.getRole(), userDto.isEnabled(), userDto.isActive(), userDto.isLoggedIn());
     }
 

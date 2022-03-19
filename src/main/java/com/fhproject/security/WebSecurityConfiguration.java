@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fhproject.user.CustomUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -20,22 +21,24 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.fhproject.user.UserService;
-
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private final UserService userService;
+    private final CustomUserDetailService customUserDetailService;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    public WebSecurityConfiguration(UserService userService) {
-        this.userService = userService;
+    public WebSecurityConfiguration(CustomUserDetailService customUserDetailService) {
+        this.customUserDetailService = customUserDetailService;
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return this.customUserDetailService;
     }
 
     public DaoAuthenticationProvider authenticationProvider() {
@@ -59,18 +62,26 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http // "/home" accessible by everybody
+        /*http // "/home" accessible by everybody
              .authorizeRequests()
-             .antMatchers("/home")
-             .permitAll();
+             .antMatchers("/")
+             .permitAll();*/
+       /* http // "/user" accessible by user with admin
+             .authorizeRequests()
+             .antMatchers("/user")
+             .access("hasRole('admin')");*/
+        http // "/user" accessible by user with admin
+                .authorizeRequests()
+                .antMatchers("/product")
+                .access("hasRole('admin')");
         http // "/admin" accessible by user with ROLE_ADMIN
-             .authorizeRequests()
-             .antMatchers("/admin")
-             .access("hasRole('admin')");
-        http // lock every route
+                .authorizeRequests()
+                .antMatchers("/cart")
+                .access("hasRole('user')");
+        /*http // lock every route
              .authorizeRequests()
              .anyRequest()
-             .authenticated();
+             .authenticated();*/
         http
             .csrf()
             .disable();
