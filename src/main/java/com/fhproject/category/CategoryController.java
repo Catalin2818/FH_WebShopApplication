@@ -26,7 +26,7 @@ public class CategoryController {
         return getJsonObject(listCategory);
     }
 
-    @PostMapping(value = "/addCategories",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/admin/addCategories",consumes = MediaType.APPLICATION_JSON_VALUE)
     public String saveCategory(@RequestBody CategoryDto categoryDto){
         Category category = Category.of(categoryDto);
         categoryService.save(category);
@@ -34,7 +34,7 @@ public class CategoryController {
         return "New Category added";
     }
 
-    @PostMapping(value = "/updateCategory",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/admin/updateCategory",consumes = MediaType.APPLICATION_JSON_VALUE)
     public String updateCategory(@RequestBody CategoryDto categoryDto){
 
         try {
@@ -45,7 +45,9 @@ public class CategoryController {
             categoryUpdate.setCategoryName(category.getCategoryName());
 
             categoryService.save(categoryUpdate);
-            return "Update was successful.";
+
+
+            return getJsonObject((categoryService.listAll()));
 
         } catch (CategoryNotFoundExeption e) {
             e.printStackTrace();
@@ -53,7 +55,7 @@ public class CategoryController {
         }
     }
 
-    @GetMapping(value = "/getSpecificCetagory/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/admin/getSpecificCetagory/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
     public String getSpecificCategory(@PathVariable("id") int specificId){
 
         Category category = null;
@@ -66,7 +68,7 @@ public class CategoryController {
         }
     }
 
-    @GetMapping("/deleteCategory/{id}")
+    @GetMapping("/admin/deleteCategory/{id}")
     public String deleteCategory(@PathVariable("id") int deleteId){
         try {
             categoryService.delete(deleteId);

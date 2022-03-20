@@ -70,10 +70,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
              .authorizeRequests()
              .antMatchers("/user")
              .access("hasRole('admin')");*/
-        http // "/user" accessible by user with admin
+      /*  http // "/user" accessible by user with admin
                 .authorizeRequests()
-                .antMatchers("/product")
-                .access("hasRole('admin')");
+                .antMatchers("/admin")
+                .access("hasRole('admin')");*/
         http // "/admin" accessible by user with ROLE_ADMIN
                 .authorizeRequests()
                 .antMatchers("/cart")
