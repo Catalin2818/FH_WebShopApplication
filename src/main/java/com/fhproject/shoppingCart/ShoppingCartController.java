@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 
 import java.util.List;
 
+import com.fhproject.cardProduct.CardProduct;
 import com.fhproject.user.User;
 
 @CrossOrigin
@@ -25,7 +26,11 @@ public class ShoppingCartController {
 
     @GetMapping("/getWholeShoppingCart")
     public String showWholeCart() {
-        List<ShoppingCart> shoppingCartList = shoppingCartService.listAll();
+        //List<ShoppingCart> shoppingCartList = shoppingCartService.listAll();
+
+        List<ShoppingCart> shoppingCartList =
+                List.of(ShoppingCart.of(new ShoppingCartDto(0, User.of(0), List.of(new CardProduct(1, 5, 0, 3)), 0,false)));
+
         return getJsonObject(shoppingCartList);
     }
 

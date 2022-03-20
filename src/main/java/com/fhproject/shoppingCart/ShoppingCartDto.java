@@ -14,7 +14,7 @@ public class ShoppingCartDto {
    private int productQuantity;
    private boolean finished;
 
-   private ShoppingCartDto(long id,User user, List<CardProduct> cardProducts,int productQuantity,  boolean finished){
+   public ShoppingCartDto(long id,User user, List<CardProduct> cardProducts,int productQuantity,  boolean finished){
        this.id = id;
        this.user = user;
        this.cardProducts = cardProducts;
