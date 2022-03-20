@@ -1,6 +1,8 @@
 package com.fhproject.shoppingCart;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.NotNull;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fhproject.cardProduct.CardProduct;
 import com.fhproject.user.User;
@@ -25,13 +28,16 @@ public class ShoppingCartController {
     private ShoppingCartService shoppingCartService;
 
     @GetMapping("/getWholeShoppingCart")
-    public String showWholeCart() {
-        //List<ShoppingCart> shoppingCartList = shoppingCartService.listAll();
+    public String showWholeCart() throws JsonProcessingException {
+        List<ShoppingCart> shoppingCartList = shoppingCartService.listCompleteShoppingCart();
+        System.out.println(shoppingCartList);
+        List<ShoppingCartDto> dto = shoppingCartList.stream().map(cart -> ShoppingCartDto.of(cart)).collect(Collectors.toList());
+        ObjectMapper objectMapper = new ObjectMapper();
+        String temp = objectMapper.writeValueAsString(dto);
+        System.out.println(temp);
 
-        List<ShoppingCart> shoppingCartList =
-                List.of(ShoppingCart.of(new ShoppingCartDto(0, User.of(0), List.of(new CardProduct(1, 5, 0, 3)), 0,false)));
 
-        return getJsonObject(shoppingCartList);
+        return temp;
     }
 
     @GetMapping("/getWholeShoppingCartOfUser/{id}")
@@ -137,7 +143,7 @@ public class ShoppingCartController {
         JSONArray jsonArray = new JSONArray(shoppingCartList);
         jsonShoppingCartList.put("shoppingCart", jsonArray);
 
-        System.out.println(jsonShoppingCartList.toString());
+        //System.out.println(jsonShoppingCartList.toString());
         return jsonShoppingCartList.toString();
     }
 

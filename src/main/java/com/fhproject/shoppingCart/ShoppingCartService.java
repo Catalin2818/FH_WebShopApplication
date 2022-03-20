@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.fhproject.cardProduct.CardProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +19,19 @@ public class ShoppingCartService {
     @Autowired
     public CardProductService cardProductService;
 
+    public List<ShoppingCart> listCompleteShoppingCart() {
+        List<ShoppingCart> shoppingCartList = listAll();
+        return shoppingCartList;
+    }
+
     public List<ShoppingCart> listAll() {
         return (List<ShoppingCart>) repo.findAll();
     }
 
     public void save(ShoppingCart shoppingCart) {
+
         repo.save(shoppingCart);
+        cardProductService.saveProducts(shoppingCart.getCardProducts(), shoppingCart.getId());
     }
 
     public List<ShoppingCart> getByUserId(User user) throws ShoppingCartNotFoundExeption {

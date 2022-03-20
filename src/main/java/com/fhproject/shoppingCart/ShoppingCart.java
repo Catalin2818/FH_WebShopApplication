@@ -1,5 +1,6 @@
 package com.fhproject.shoppingCart;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fhproject.cardProduct.CardProduct;
 import com.fhproject.product.Product;
 import com.fhproject.user.User;
@@ -25,10 +26,12 @@ public class ShoppingCart {
     private User user;*/
 
     @ManyToOne
+    //@JsonManagedReference
     //@Column(name="userId", nullable = false, updatable = false)
     private User user;
 
     @OneToMany(mappedBy = "shoppingCart")
+    //@JsonManagedReference
     private List<CardProduct> cardProducts;
 
     @Positive

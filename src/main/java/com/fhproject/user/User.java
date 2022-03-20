@@ -1,13 +1,13 @@
 package com.fhproject.user;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fhproject.shoppingCart.ShoppingCart;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -41,9 +41,10 @@ public class User {
     @Column(length = 50, nullable = false, name="user_role")
     private String role = "user";
 
-    @Column
+
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private Set<ShoppingCart> shoppingCart;
+    @JsonBackReference
+    private List<ShoppingCart> shoppingCart;
 
     private boolean enabled;
 
@@ -156,11 +157,11 @@ public class User {
 
     public void setLoggedIn(boolean loggedIn) {this.loggedIn = loggedIn;}
 
-    public Set<ShoppingCart> getShoppingCart() {
+    public List<ShoppingCart> getShoppingCart() {
         return shoppingCart;
     }
 
-    public void setShoppingCart(Set<ShoppingCart> shoppingCart) {
+    public void setShoppingCart(List<ShoppingCart> shoppingCart) {
         this.shoppingCart = shoppingCart;
     }
 

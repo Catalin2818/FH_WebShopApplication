@@ -74,10 +74,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/admin")
                 .access("hasRole('admin')");*/
-        /*http // "/admin" accessible by user with ROLE_ADMIN
+        http // "/admin" accessible by user with ROLE_ADMIN
                 .authorizeRequests()
                 .antMatchers("/cart")
-                .access("hasRole('user')");*/
+                .access("hasRole('user')");
         /*http // lock every route
              .authorizeRequests()
              .anyRequest()

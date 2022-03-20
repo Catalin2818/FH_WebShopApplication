@@ -1,5 +1,7 @@
 package com.fhproject.cardProduct;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -25,8 +27,9 @@ public class CardProduct {
     @Column
     private int shoppingCart;
 
-    @Column
-    private int productId;
+    @Column(name = "product_id")
+    //@JsonBackReference
+    private int productNumber;
 
     public CardProduct() {
     }
@@ -35,7 +38,7 @@ public class CardProduct {
         this.id = id;
         this.productQuantity = productQuantity;
         this.shoppingCart = shoppingCart;
-        this.productId = productId;
+        this.productNumber = productId;
     }
 
     public long getId() {
@@ -63,11 +66,11 @@ public class CardProduct {
     }
 
     public int getProductId() {
-        return productId;
+        return productNumber;
     }
 
     public void setProductId(int productId) {
-        this.productId = productId;
+        this.productNumber = productId;
     }
 
     @Override
@@ -76,7 +79,7 @@ public class CardProduct {
                 "id=" + id +
                 ", productQuantity=" + productQuantity +
                 ", shoppingCart=" + shoppingCart +
-                ", productId=" + productId +
+                ", productId=" + productNumber +
                 '}';
     }
 
@@ -88,12 +91,12 @@ public class CardProduct {
             return false;
         CardProduct that = (CardProduct) o;
         return id == that.id && productQuantity == that.productQuantity && shoppingCart == that.shoppingCart
-               && productId == that.productId;
+               && productNumber == that.productNumber;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, productQuantity, shoppingCart, productId);
+        return Objects.hash(id, productQuantity, shoppingCart, productNumber);
     }
 
 
