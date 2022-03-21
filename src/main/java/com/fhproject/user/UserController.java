@@ -1,21 +1,20 @@
 package com.fhproject.user;
 
-import com.fhproject.product.Product;
-import com.fhproject.product.ProductNotFoundExeption;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fhproject.shoppingCart.ShoppingCartDto;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
@@ -97,6 +96,22 @@ public class UserController {
             e.printStackTrace();
             return "Coudn't find specific user.";
         }
+    }
+
+    @GetMapping("/getUserWithEmail/{email}")
+    public String getUserWithEmail(@PathVariable("email") String email) {
+        User user = null;
+        String temp = "";
+        try {
+            user = service.getUserWithEmail(email);
+            ObjectMapper objectMapper = new ObjectMapper();
+            temp = objectMapper.writeValueAsString(user);
+        } catch (UserNotFoundExeption e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return temp;
     }
 
     @GetMapping("/deleteUser{id}")
