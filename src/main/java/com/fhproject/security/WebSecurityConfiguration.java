@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.fhproject.user.CustomUserDetailService;
+import com.fhproject.service.CustomUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
