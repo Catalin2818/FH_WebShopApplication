@@ -61,7 +61,7 @@ public class UserController {
     @GetMapping("/getAllUsers")
     public String showUserList(){
         List<User> listUsers = service.listAll();
-        //TODO
+
         return getJsonObject(listUsers);
     }
 
