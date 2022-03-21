@@ -55,7 +55,7 @@ public class ShoppingCartController {
                 .body(getJsonObject(shoppingCartList));
     }
 
-    @GetMapping("/getUnfinishedShoppingCartOfUser/{id}")
+    @GetMapping(value = "/getUnfinishedShoppingCartOfUser/{id}")
     public ResponseEntity<String> showUnfinishedCartOfUser(@PathVariable("id") int userId) {
         List<ShoppingCart> shoppingCartList = null;
         try {
@@ -80,25 +80,29 @@ public class ShoppingCartController {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.NO_CONTENT)
-                    .body("No finished shopping cart for userId " + userId + "exists.");
+                    .body("No finished shopping cart for userId " + userId + " exists.");
         }
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(getJsonObject(shoppingCartList));
     }
 
-    @GetMapping("/setShoppingCartFinished/{id}")
-    public ResponseEntity.BodyBuilder setFinishedCartOfUser(@PathVariable("id") int shoppingCartId) {
+    @GetMapping(value = "/setShoppingCartFinished/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> setFinishedCartOfUser(@PathVariable("id") int userId) {
         try {
-            ShoppingCart shoppingCart = shoppingCartService.get(shoppingCartId);
-            shoppingCart.setFinished(false);
-            shoppingCartService.save(shoppingCart);
+            List<ShoppingCart> shoppingCart = shoppingCartService.getUnfinishedCartByUserId(User.of(userId));
+            if(shoppingCart.get(0) != null) {
+                shoppingCart.get(0).setFinished(true);
+                shoppingCartService.save(shoppingCart.get(0));
+            }
         } catch (ShoppingCartNotFoundExeption e) {
             return ResponseEntity
-                    .status(HttpStatus.FORBIDDEN);
+                    .status(HttpStatus.FORBIDDEN)
+                    .body("No ShoppingCart found for userId " + userId);
         }
         return ResponseEntity
-                .status(HttpStatus.OK);
+                .status(HttpStatus.OK)
+                .body("Shopping cart successfully finished for userId " + userId);
     }
 
     @PostMapping(value = "/addToShoppingCart", consumes = MediaType.APPLICATION_JSON_VALUE)
