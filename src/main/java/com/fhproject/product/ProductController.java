@@ -31,14 +31,14 @@ public class ProductController {
         try {
             List<Product> productList = service.getProductsOfCategory(category);
             return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
+                    .status(HttpStatus.OK)
                     .body(getJsonObject(productList));
 
         } catch (ProductNotFoundExeption e) {
             System.out.println("Could not find any products of category " + category);
         }
         return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
+                .status(HttpStatus.NOT_FOUND)
                 .body("Could not find any products of category");
     }
 

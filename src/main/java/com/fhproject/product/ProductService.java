@@ -38,9 +38,9 @@ public class ProductService {
     }
 
     public List<Product> getProductsOfCategory(String category) throws ProductNotFoundExeption {
-        Optional<Product> result = repo.findByProductCategory(category);
-        if (result.isPresent()) {
-            return result.stream().collect(Collectors.toList());
+        List<Product> result = repo.findByProductCategory(category);
+        if (!result.isEmpty()) {
+            return result;
         }
         throw new ProductNotFoundExeption("Could not find products with category " + category);
 
