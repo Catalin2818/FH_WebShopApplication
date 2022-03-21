@@ -16,7 +16,6 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.fhproject.cardProduct.CardProduct;
 import com.fhproject.user.User;
 
 @CrossOrigin
@@ -86,6 +85,20 @@ public class ShoppingCartController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(getJsonObject(shoppingCartList));
+    }
+
+    @GetMapping("/setShoppingCartFinished/{id}")
+    public ResponseEntity.BodyBuilder setFinishedCartOfUser(@PathVariable("id") int shoppingCartId) {
+        try {
+            ShoppingCart shoppingCart = shoppingCartService.get(shoppingCartId);
+            shoppingCart.setFinished(false);
+            shoppingCartService.save(shoppingCart);
+        } catch (ShoppingCartNotFoundExeption e) {
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN);
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK);
     }
 
     @PostMapping(value = "/addToShoppingCart", consumes = MediaType.APPLICATION_JSON_VALUE)
