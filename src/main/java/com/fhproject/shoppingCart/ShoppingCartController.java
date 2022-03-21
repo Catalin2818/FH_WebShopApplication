@@ -58,17 +58,23 @@ public class ShoppingCartController {
     @GetMapping(value = "/getUnfinishedShoppingCartOfUser/{id}")
     public ResponseEntity<String> showUnfinishedCartOfUser(@PathVariable("id") int userId) {
         List<ShoppingCart> shoppingCartList = null;
+        String temp = "";
         try {
             shoppingCartList = shoppingCartService.getUnfinishedCartByUserId(User.of(userId));
+            List<ShoppingCartDto> dto = shoppingCartList.stream().map(cart -> ShoppingCartDto.of(cart)).collect(Collectors.toList());
+            ObjectMapper objectMapper = new ObjectMapper();
+            temp = objectMapper.writeValueAsString(dto);
         } catch (ShoppingCartNotFoundExeption e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.NO_CONTENT)
                     .body("No unfinished shopping cart for userId " + userId + "exists.");
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(getJsonObject(shoppingCartList));
+                .body(temp);
     }
 
     @GetMapping("/getFinishedShoppingCartOfUser/{id}")
