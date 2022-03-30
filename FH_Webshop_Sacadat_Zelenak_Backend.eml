@@ -139,6 +139,7 @@
 		<level name="Maven: org.springframework:spring-context-support:5.3.8" value="project"/>
 		<level name="Maven: com.sun.mail:jakarta.mail:1.6.7" value="project"/>
 		<level name="Maven: com.sun.activation:jakarta.activation:1.2.2" value="project"/>
+		<level name="Maven: commons-io:commons-io:2.11.0" value="project"/>
 		<level name="Maven: org.json:json:20160810" value="project"/>
 		<level name="Maven: org.junit.jupiter:junit-jupiter-api:5.7.2" value="project"/>
 		<level name="Maven: org.apiguardian:apiguardian-api:1.1.0" value="project"/>

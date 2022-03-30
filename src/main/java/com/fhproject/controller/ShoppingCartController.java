@@ -69,10 +69,10 @@ public class ShoppingCartController {
             ObjectMapper objectMapper = new ObjectMapper();
             temp = objectMapper.writeValueAsString(dto);
         } catch (ShoppingCartNotFoundExeption e) {
-            e.printStackTrace();
+            System.out.println("No unfinished shopping cart for userId " + userId + " exists.");
             return ResponseEntity
                     .status(HttpStatus.NO_CONTENT)
-                    .body("No unfinished shopping cart for userId " + userId + "exists.");
+                    .body("No unfinished shopping cart for userId " + userId + " exists.");
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

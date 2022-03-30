@@ -12,6 +12,8 @@ import javax.validation.constraints.Positive;
 @Table(name = "products")
 public class Product {
 
+    private final String LOCATION = "G:\\CAT\\desktop\\BackendImages\\";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -69,7 +71,7 @@ public class Product {
                         this.productQuantity = productQuantity;
                         this.productCategory = productCategory;
                         this.productPickedUp = productPickedUp;
-                        this.image = image;
+                        this.image = LOCATION + image;
     }
 
     public static Product of(@NotNull ProductDto productDto) {

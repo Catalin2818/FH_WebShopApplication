@@ -17,7 +17,7 @@ public class ProductDto {
     private String productPickup;
     private String image;
 
-    private ProductDto(int id, String productName, String productOrigin,
+    public ProductDto(int id, String productName, String productOrigin,
                        String productDesc,String productAllergens, double productPrice,
                        int productQuantity, String productCategory,String productPickup, String image){
 

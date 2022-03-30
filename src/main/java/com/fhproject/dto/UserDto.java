@@ -1,5 +1,9 @@
 package com.fhproject.dto;
 
+import com.fhproject.entity.User;
+
+import javax.validation.constraints.NotNull;
+
 public class UserDto {
 
     private int id;
@@ -25,6 +29,11 @@ public class UserDto {
         this.enabled = enabled;
         this.active = active;
         this.loggedIn = loggedIn;
+    }
+
+    public static UserDto of(@NotNull User user) {
+        return new UserDto(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getCart(),
+                user.getRole(), user.isEnabled(), user.isActive(), user.isLoggedIn());
     }
 
     public int getId() {

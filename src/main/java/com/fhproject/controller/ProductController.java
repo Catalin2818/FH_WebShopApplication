@@ -26,17 +26,48 @@ public class ProductController {
     @GetMapping(value = "/getAllProducts")
     public String showProductList(){
         List<Product> listProducts = service.listAll();
+        List<ProductDto> newListProducts =
+                listProducts
+                        .stream()
+                        .map(product -> new ProductDto(product.getId(), product.getProductName(),
+                                product.getProductOrigin(), product.getProductDesc(), product.getProductAllergens(), product.getProductPrice(),
+                                product.getProductQuantity(), product.getProductCategory(), product.getProductPickedUp(),
+                                service.encodeBase64(product.getImage())))
+                        .collect(Collectors.toList());
 
-       return getJsonObject(listProducts);
+       return getJsonObjectOfDto(newListProducts);
+    }
+
+    @GetMapping(value = "/admin/getAllProducts")
+    public String showProductListAdmin(){
+        List<Product> listProducts = service.listAll();
+        List<ProductDto> newListProducts =
+                listProducts
+                        .stream()
+                        .map(product -> new ProductDto(product.getId(), product.getProductName(),
+                                product.getProductOrigin(), product.getProductDesc(), product.getProductAllergens(), product.getProductPrice(),
+                                product.getProductQuantity(), product.getProductCategory(), product.getProductPickedUp(),
+                                product.getImage()))
+                        .collect(Collectors.toList());
+
+        return getJsonObjectOfDto(newListProducts);
     }
 
     @GetMapping(value = "/getAllProductsOfCategory/{category}")
     public ResponseEntity<String> showProductListOfCategory(@PathVariable("category") String category) {
         try {
             List<Product> productList = service.getProductsOfCategory(category);
+            List<ProductDto> newListProducts =
+                    productList
+                            .stream()
+                            .map(product -> new ProductDto(product.getId(), product.getProductName(),
+                                    product.getProductOrigin(), product.getProductDesc(), product.getProductAllergens(), product.getProductPrice(),
+                                    product.getProductQuantity(), product.getProductCategory(), product.getProductPickedUp(),
+                                    service.encodeBase64(product.getImage())))
+                            .collect(Collectors.toList());
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(getJsonObject(productList));
+                    .body(getJsonObjectOfDto(newListProducts));
 
         } catch (ProductNotFoundExeption e) {
             System.out.println("Could not find any products of category " + category);
@@ -69,6 +100,7 @@ public class ProductController {
             productUpdate.setProductQuantity(product.getProductQuantity());
             productUpdate.setProductCategory(product.getProductCategory());
             productUpdate.setProductPickedUp(product.getProductPickedUp());
+            productUpdate.setImage(product.getImage());
 
             service.save(productUpdate);
             return "Update was seccessful.";
@@ -85,6 +117,7 @@ public class ProductController {
     public String getSpecificProduct(@PathVariable("id") int specificId){
         try {
             Product product = service.get(specificId);
+            product.setImage(service.encodeBase64(product.getImage()));
             return getJsonObject(List.of(product));
 
         } catch (ProductNotFoundExeption e) {
@@ -114,7 +147,17 @@ public class ProductController {
         JSONArray jsonArray = new JSONArray(productDto);
         jsonProductList.put("product", jsonArray);
 
-        System.out.println(jsonProductList);
+        //System.out.println(jsonProductList);
+        return jsonProductList.toString();
+    }
+
+    @NotNull
+    private String getJsonObjectOfDto(List<ProductDto> productUpdate) {
+        JSONObject jsonProductList = new JSONObject();
+        JSONArray jsonArray = new JSONArray(productUpdate);
+        jsonProductList.put("product", jsonArray);
+
+        //System.out.println(jsonProductList);
         return jsonProductList.toString();
     }
 }

@@ -14,6 +14,7 @@ public class CustomUserDetail implements UserDetails {
     private String password;
     private boolean active;
     private List<GrantedAuthority> authorities;
+    private String role;
 
     public CustomUserDetail(String userName) {
         this.username = userName;
@@ -24,7 +25,7 @@ public class CustomUserDetail implements UserDetails {
         this.password = user.getPassword();
         this.active = user.isActive();
         this.authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
-
+        this.role = user.getRole();
 
 
     }
@@ -37,6 +38,10 @@ public class CustomUserDetail implements UserDetails {
     @Override
     public String getPassword() {
         return password;
+    }
+
+    public String getRole() {
+        return role;
     }
 
     @Override

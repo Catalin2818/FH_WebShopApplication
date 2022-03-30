@@ -62,18 +62,60 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http
+                .cors()
+        .and() // "/home" accessible by everybody
+                .authorizeRequests()
+                .antMatchers("/login", "/logout","/cart","/user","/product/admin/getAllProducts","/product/*","/product/getAllProducts", "/product/admin/getAllProducts", "/product/getSpecificProduct/*","/product/getAllProductsOfCategory/*","/category/getAllCategories","/user/registration")
+                //.antMatchers("/")
+                .permitAll()
+        .and() // "/admin" accessible by user with ROLE_ADMIN
+                .authorizeRequests()
+                .antMatchers("/admin","/products/new")
+                .access("hasRole('admin')")
+        .and()
+                .logout()
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .logoutSuccessHandler((httpServletRequest, httpServletResponse, authentication) -> {
+                    httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+                })
+        .and() // lock every route
+                .authorizeRequests()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .csrf()
+                .disable();
+        http
+                .addFilterAt(
+                        usernamePasswordAuthenticationFilter(),
+                        UsernamePasswordAuthenticationFilter.class
+                );
+        http
+                .exceptionHandling()
+                .accessDeniedHandler(
+                        (httpServletRequest, httpServletResponse, e) ->
+                                httpServletResponse.sendError(
+                                        HttpServletResponse.SC_FORBIDDEN
+                                )
+                )
+                .authenticationEntryPoint(
+                        new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)
+                );
+
         /*http // "/home" accessible by everybody
              .authorizeRequests()
              .antMatchers("/")
-             .permitAll();*/
+             .permitAll();
        /* http // "/user" accessible by user with admin
              .authorizeRequests()
              .antMatchers("/user")
-             .access("hasRole('admin')");*/
+             .access("hasRole('admin')");
       /*  http // "/user" accessible by user with admin
                 .authorizeRequests()
                 .antMatchers("/admin")
-                .access("hasRole('admin')");*/
+                .access("hasRole('admin')");
         http // "/admin" accessible by user with ROLE_ADMIN
                 .authorizeRequests()
                 .antMatchers("/cart")
@@ -81,7 +123,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         /*http // lock every route
              .authorizeRequests()
              .anyRequest()
-             .authenticated();*/
+             .authenticated();
         http
             .csrf()
             .disable();
@@ -89,10 +131,17 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .formLogin()
             .loginProcessingUrl("/login")
             .permitAll();
+
         http
             .logout()
             .logoutUrl("/logout")
-            .permitAll();
+            //.permitAll();
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .logoutSuccessHandler((httpServletRequest, httpServletResponse, authentication) -> {
+                    httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+                });
+
         http
             .addFilterAt(
                 usernamePasswordAuthenticationFilter(),
@@ -110,12 +159,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)
             );
         http
-                .cors();
+                .cors();*/
     }
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5500", "http://127.0.0.1:5500"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5500", "http://127.0.0.1:5500", "http://localhost:63342"));
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(Arrays.asList("*"));
